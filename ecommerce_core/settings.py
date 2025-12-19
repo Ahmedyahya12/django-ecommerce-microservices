@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+from datetime import timedelta
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -31,12 +33,19 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+     'rest_framework',
+     'rest_framework_simplejwt',
+    # 'corsheaders',
+    # 'allauth'
+     'accounts',
+     'catalog'
 ]
 
 MIDDLEWARE = [
@@ -110,13 +119,55 @@ USE_I18N = True
 
 USE_TZ = True
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
+}
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+EMAIL_HOST_USER = "siteecomers@gmail.com"
+EMAIL_HOST_PASSWORD = "yqyzdwlleaslpsis"   # sans espaces !
+
+DEFAULT_FROM_EMAIL = "siteecomers@gmail.com"
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = "/static/"
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+    # Add other directories if needed
+]
+
+# for deployment
+
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+
+# URL publique des fichiers médias
+MEDIA_URL = "/media/"
+
+# # Dossier où Django stocke les fichiers uploadés
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
+AUTH_USER_MODEL = 'accounts.CustomUser'
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+BASE_URL='http://127.0.0.1:8000/api/v1'

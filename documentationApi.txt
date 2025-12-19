@@ -1,0 +1,35 @@
+App accounts 
+
+/api/v1/accounts/
+│
+├── auth/
+│   ├── register/
+│   ├── activate/
+│   └── login/
+│
+├── password/
+│   ├── reset/
+│   └── reset/confirm/
+│
+└── me/
+
+
+App Catalog 
+
+/api/v1/products/
+│
+├── /                   # Liste de tous les produits
+│
+├── /?category=<slug>&min_price=<valeur>&max_price=<valeur>
+│                       # Filtrer les produits par catégorie et prix
+│
+├── /{slug}/            # Détails d’un produit spécifique par slug
+│
+├── /?q=<mot_clef>      # Recherche de produits
+│
+├── POST /              # Créer un nouveau produit (admin)
+├── PUT /{slug}/        # Mettre à jour un produit complet (admin)
+├── PATCH /{slug}/      # Mise à jour partielle d’un produit (admin)
+└── DELETE /{slug}/     # Supprimer un produit (admin)
+
+
