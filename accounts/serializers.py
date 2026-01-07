@@ -4,6 +4,8 @@ from .models import CustomUser  # Importation du modèle CustomUser
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
 
+User = get_user_model()
+
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, validators=[validate_password])
@@ -44,7 +46,6 @@ class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField()
 
-User = get_user_model()
 
 class EditProfileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -90,3 +91,11 @@ class ResetPasswordSerializer(serializers.Serializer):
         if data["new_password"] != data["confirm_password"]:
             raise serializers.ValidationError("Les mots de passe ne correspondent pas")
         return data
+
+
+class UserSerializer(serializers.ModelSerializer):
+     
+     class Meta:
+          model=User
+          fields=['id','email','first_name','last_name']
+

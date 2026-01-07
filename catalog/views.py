@@ -3,8 +3,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from catalog.filters import ProductFilter
-from catalog.models import Product
-from catalog.serializers import ProductDetailSerializer, ProductListSerializer
+from catalog.models import Category, Product
+from catalog.serializers import CategoryDetailSerializer, CategoryListSerializer, ProductDetailSerializer, ProductListSerializer
 from django.db.models import Q
 
 
@@ -40,3 +40,19 @@ def search_products(request):
 
     serializer = ProductListSerializer(qs_filtered, many=True)
     return Response({"products": serializer.data})
+
+
+@api_view(['GET'])
+def list_category(request):
+    """List all categories."""
+    categories = Category.objects.all().order_by('-id')
+    serializer = CategoryListSerializer(categories, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def detail_category(request, slug):
+    """Get category details by slug."""
+    category = get_object_or_404(Category, slug=slug)
+    serializer = CategoryDetailSerializer(category)
+    return Response(serializer.data)

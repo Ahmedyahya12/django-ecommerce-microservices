@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from accounts.managers import CustomUserManager
+from ecommerce_core import settings
 
 # Create your models here.
 
@@ -25,3 +26,33 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.email
+
+
+
+    
+
+class Coupon(models.Model):
+    code = models.CharField(max_length=50, unique=True)
+    discount = models.DecimalField(max_digits=5, decimal_places=2)
+    discount_type = models.CharField(max_length=10, choices=(('percent','Percent'),('fixed','Fixed')), default='percent')
+    expire_date = models.DateField(null=True,blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
+    usage_limit = models.PositiveIntegerField(default=1)
+    used_count=models.PositiveIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+         return f'{self.code}--{self.discount_type}'
+    
+
+class CustomerAddress(models.Model):
+    user=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,related_name='addresses')
+    street = models.CharField(max_length=100,null=True,blank=True)
+    city = models.CharField(max_length=100,null=True,blank=True)
+    state = models.CharField(max_length=100 ,null=True,blank=True)
+    zip_code = models.CharField(max_length=20 ,null=True,blank=True)
+    phone_no = models.CharField(max_length=20 ,null=True,blank=True)
+
+

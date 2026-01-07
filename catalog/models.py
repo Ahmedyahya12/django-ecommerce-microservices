@@ -8,6 +8,11 @@ class Category(models.Model):
     slug = models.SlugField(max_length=100, unique=True, blank=True, null=True)
     image = models.ImageField(upload_to="category_images/", blank=True, null=True)
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.name
 
@@ -48,4 +53,4 @@ class Product(models.Model):
         # 3. Add custom logic here (after saving to the database)
 
     def __str__(self):
-        return self.name
+        return f"{self.name} # {self.id}"

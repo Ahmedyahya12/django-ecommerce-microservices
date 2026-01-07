@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     # 'allauth'
     "accounts",
     "catalog",
+    "orders"
 ]
 
 MIDDLEWARE = [

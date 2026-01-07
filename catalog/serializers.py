@@ -20,6 +20,20 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = "__all__"
 
+class CategoryListSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model=Category
+        fields=['id','name','image','slug']
+
+class CategoryDetailSerializer(serializers.ModelSerializer):
+    products=ProductListSerializer(many=True,read_only=True)
+    class Meta:
+        model=Category
+        fields=['id','name','image','slug','products']
+
+
+
 
 class ProductDetailSerializer(serializers.ModelSerializer):
 
